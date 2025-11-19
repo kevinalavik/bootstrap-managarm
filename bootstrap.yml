@@ -59,7 +59,6 @@ imports:
   - file: bootstrap.d/sys-process.y4.yml
   - file: bootstrap.d/tasks.y4.yml
   - file: bootstrap.d/www-client.y4.yml
-  - file: bootstrap.d/www-servers.y4.yml
   - file: bootstrap.d/x11-apps.y4.yml
   - file: bootstrap.d/x11-base.y4.yml
   - file: bootstrap.d/x11-libs.y4.yml
