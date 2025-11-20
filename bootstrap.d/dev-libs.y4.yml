@@ -2933,3 +2933,73 @@ packages:
       - args: ['ninja', 'install']
         environ:
           DESTDIR: '@THIS_COLLECT_DIR@'
+
+  - name: apr
+    architecture: '@OPTION:arch@'
+    source:
+      subdir: 'ports'
+      url: 'https://dlcdn.apache.org/apr/apr-1.7.6.tar.gz'
+      format: 'tar.gz'
+      checksum: sha256:6a10e7f7430510600af25fabf466e1df61aaae910bf1dc5d10c44a4433ccc81d
+      extract_path: 'apr-1.7.6'
+      version: '1.7.6'
+      tools_required:
+        - host-autoconf-v2.69
+        - host-automake-v1.15
+        - host-libtool
+      regenerate:
+        - args: ['autoreconf', '-fvi']
+    tools_required:
+      - system-gcc
+    pkgs_required:
+      - mlibc
+    revision: 1
+    configure:
+      - args:
+        - '@THIS_SOURCE_DIR@/configure'
+        - '--host=@OPTION:arch-triple@'
+        - '--prefix=/usr'
+        environ:
+          ac_cv_file__dev_zero: 'yes'
+          ac_cv_func_pthread_mutexattr_setpshared: 'no'
+          apr_cv_tcp_nodelay_with_cork: 'yes'
+          ac_cv_func_setpgrp_void: 'yes'
+          ac_cv_func_strerror_r: 'no'
+    build:
+      - args: ['make', '-j@PARALLELISM@']
+      - args: ['make', 'install']
+        environ:
+          DESTDIR: '@THIS_COLLECT_DIR@'
+
+  - name: apr-util
+    architecture: '@OPTION:arch@'
+    source:
+      subdir: 'ports'
+      url: 'https://dlcdn.apache.org/apr/apr-util-1.6.3.tar.gz'
+      format: 'tar.gz'
+      checksum: sha256:2b74d8932703826862ca305b094eef2983c27b39d5c9414442e9976a9acf1983
+      extract_path: 'apr-util-1.6.3'
+      version: '1.6.3'
+      tools_required:
+        - host-autoconf-v2.69
+        - host-automake-v1.15
+        - host-libtool
+      regenerate:
+        - args: ['autoreconf', '-fvi']
+    tools_required:
+      - system-gcc
+    pkgs_required:
+      - mlibc
+      - apr
+    revision: 1
+    configure:
+      - args:
+        - '@THIS_SOURCE_DIR@/configure'
+        - '--host=@OPTION:arch-triple@'
+        - '--prefix=/usr'
+        - '--with-apr=@SYSROOT_DIR@/usr/bin/apr-1-config'
+    build:
+      - args: ['make', '-j@PARALLELISM@']
+      - args: ['make', 'install']
+        environ:
+          DESTDIR: '@THIS_COLLECT_DIR@'

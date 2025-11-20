@@ -1,0 +1,30 @@
+packages:
+  - name: httpd
+    architecture: '@OPTION:arch@'
+    source:
+      subdir: 'ports'
+      url: 'https://dlcdn.apache.org/httpd/httpd-2.4.65.tar.gz'
+      format: 'tar.gz'
+      checksum: sha256:4f92861a50325c6d1046ebad5d814bff0d4169ada8cc265655f32b7f1ba4be1b
+      extract_path: 'httpd-2.4.65'
+      version: '2.4.65'
+    tools_required:
+      - system-gcc
+      - virtual: pkgconfig-for-target
+        triple: x86_64-managarm
+    pkgs_required:
+      - mlibc
+      - pcre2
+      - apr
+    revision: 1
+    configure:
+      - args:
+        - '@THIS_SOURCE_DIR@/configure'
+        - '--prefix=/usr'
+        environ:
+          CC: '@OPTION:arch-triple@-gcc'
+    build:
+      - args: ['make', '-j@PARALLELISM@']
+      - args: ['make', 'DESTDIR=@THIS_COLLECT_DIR@', 'install']
+        environ:
+          DESTDIR: '@THIS_COLLECT_DIR@'
